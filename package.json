@@ -1,0 +1,21 @@
+{
+  "name": "codemod-scripts",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate": "jscodeshift -t src/jscodeshift/migration.js src/jscodeshift/code.js",
+    "migrate:01": "jscodeshift -t src/jscodeshift/01/migration.js src/jscodeshift/01/code.js",
+    "migrate:02": "jscodeshift -t src/jscodeshift/02/migration.js src/jscodeshift/02/code.js",
+    "migrate:03": "jscodeshift -t src/jscodeshift/03/migration.js src/jscodeshift/03/code.js",
+    "migrate:04": "jscodeshift -t src/jscodeshift/04/migration-03.js src/jscodeshift/04/code.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.8.1",
+    "jscodeshift": "^17.1.2"
+  }
+}
