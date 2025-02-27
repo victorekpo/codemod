@@ -1,7 +1,8 @@
 const {findAndReplaceProperty} = require("../utils/migrationUtils");
 
 module.exports = function(fileInfo, api) {
-  const root = j(fileInfo.source);
+  const root = api.j(fileInfo.source);
+  const j = api.j;
 
   // Define common variables for context
   const contextMemberExpression = {

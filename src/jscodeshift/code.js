@@ -2,11 +2,11 @@ import { getContext } from 'context-lib';
 
 const context = getContext();
 
-const { user } = context;
+const { profile } = context;
 
-const fullName = user.name;
+const fullName = profile.fullName;
 
-const username = user.username;
+const username = profile.username;
 
 if (!username) {
   throw new Error('no username found');

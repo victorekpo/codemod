@@ -48,8 +48,8 @@ const findAndReplaceProperty = (root, contextMemberExpression, oldProperty, newP
   root
     .find(j.Identifier, { name: oldProperty })
     .forEach(path => {
-      const line = path.node.loc ? path.node.loc.start.line : null;
-      console.log(`Replaced usage of "${oldProperty}" with "${newProperty}" in object "${objectName}" at line ${line}`);
+      const line = path.parentPath.node.loc ? path.parentPath.node.loc.start.line : null;
+      console.log(`For destructured property, replaced usage of "${oldProperty}" with "${newProperty}" in object "${objectName}" at line ${line}`);
       path.node.name = newProperty;
     });
 

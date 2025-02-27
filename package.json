@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "migrate": "jscodeshift -t src/jscodeshift/migration.js src/jscodeshift/code.js",
+    "migrate": "cp src/jscodeshift/old.js src/jscodeshift/code.js && jscodeshift -t src/jscodeshift/migration.js src/jscodeshift/code.js",
     "migrate:01": "jscodeshift -t src/jscodeshift/01/migration.js src/jscodeshift/01/code.js",
     "migrate:02": "jscodeshift -t src/jscodeshift/02/migration.js src/jscodeshift/02/code.js",
     "migrate:03": "jscodeshift -t src/jscodeshift/03/migration.js src/jscodeshift/03/code.js",
