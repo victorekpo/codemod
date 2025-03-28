@@ -1,24 +1,51 @@
-const { automateMigrationAndMergeRequest } = require("../utils/automation");
+const {
+  findAndReplaceProperty,
+  readFilesWithExportsAndImports,
+  gatherFilesWithContext,
+  updateContext
+} = require("./utils/utils");
 
-// Your GitLab project ID
-const PROJECT_ID = 'your_project_id';
-// GitLab user ID for the MR assignee
-const ASSIGNEE_ID = 'assignee_user_id';
-// Replace with your target branch (e.g., 'main', 'develop')
-const TARGET_BRANCH = 'main';
+const {relative} = require("node:path");
 
-// Branch to create
-const SOURCE_BRANCH = 'feature/migration-v2';
-// Command to run the migration script
-const MIGRATION_SCRIPT_COMMAND = 'npm run migrate';
+const found = readFilesWithExportsAndImports();
+const importingFromExports = found.importingFromExports.map(file => relative(process.cwd(), file));
 
-// Run the automation
-(async () => {
-  await automateMigrationAndMergeRequest(
-    MIGRATION_SCRIPT_COMMAND,
-    PROJECT_ID,
-    SOURCE_BRANCH,
-    TARGET_BRANCH,
-    ASSIGNEE_ID
-  );
-})();
+module.exports = function (fileInfo, api) {
+  const root = api.j(fileInfo.source);
+  const j = api.j;
+
+  const currentFileRelativePath = relative(process.cwd(), fileInfo.path);
+  const isMatch = importingFromExports.includes(currentFileRelativePath);
+
+  console.log("file", currentFileRelativePath, "matches:", isMatch);
+
+  // Define common variables for context
+  const myProfileMemberExpression = {
+    object: {name: 'myProfile'}
+  };
+
+  // Handle my-lib detection and migration
+  const isContextImportedFromLibrary = root
+    .find(j.ImportDeclaration)
+    .filter(path => path.node.source.value === 'my-lib')
+    .some(path => {
+      const importSpecifiers = path.node.specifiers;
+      return importSpecifiers.some(specifier =>
+        specifier.imported &&
+        (specifier.imported.name === 'getProfile' || specifier.imported.name === 'myProfile' || specifier.local.name === 'myProfile')
+      );
+    });
+
+  if (isContextImportedFromLibrary || isMatch) {
+    console.log('Migration Script: my-lib detected, proceeding with migration...');
+
+    // Apply the migration for user -> profile and name -> fullName
+    findAndReplaceProperty(fileInfo, root, myProfileMemberExpression, 'user', 'profile', 'context');
+    findAndReplaceProperty(fileInfo, root, myProfileMemberExpression, 'name', 'fullName', 'context');
+  }
+
+  updateContext(fileInfo, root);
+
+  // Return the modified source code
+  return root.toSource();
+};

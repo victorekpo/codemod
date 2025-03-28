@@ -3,12 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "migrate": "cp src/jscodeshift/old.js src/jscodeshift/code.js && jscodeshift -t src/jscodeshift/migration.js src/jscodeshift/code.js",
-    "migrate:01": "jscodeshift -t src/jscodeshift/01/migration.js src/jscodeshift/01/code.js",
-    "migrate:02": "jscodeshift -t src/jscodeshift/02/migration.js src/jscodeshift/02/code.js",
-    "migrate:03": "jscodeshift -t src/jscodeshift/03/migration.js src/jscodeshift/03/code.js",
-    "migrate:04": "jscodeshift -t src/jscodeshift/04/migration-03.js src/jscodeshift/04/code.js"
+    "gather-context": "node src/jscodeshift/gatherContext.js",
+    "migrate": "npm run reset-migrated && npm run gather-context && npm run start-migrate",
+    "reset-migrated": "cp -a src/jscodeshift/codeToMigrate/old/* src/jscodeshift/codeToMigrate/migrated",
+    "start-migrate": "jscodeshift -t src/jscodeshift/index.js src/jscodeshift/codeToMigrate/migrated"
   },
   "keywords": [],
   "author": "",
