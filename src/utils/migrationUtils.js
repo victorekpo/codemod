@@ -89,6 +89,36 @@ function traverseAndReplaceNested(path, oldKey, newKey, objectName) {
   }
 }
 
+const findAndExtractImports = (root, context) => {
+  root.find(j.ImportDeclaration).forEach(path => {
+    const sourceFile = path.node.source.value;
+    path.node.specifiers.forEach(specifier => {
+      context.imports.set(specifier.local.name, { sourceFile, importedAs: specifier.imported?.name || specifier.local.name });
+    });
+  });
+};
+
+const findAndExtractVariables = (root, context) => {
+  root.find(j.VariableDeclarator).forEach(path => {
+    if (path.node.init && path.node.init.type === 'Identifier') {
+      const original = path.node.init.name;
+      const alias = path.node.id.name;
+      context.aliases.set(alias, context.imports.get(original) || context.aliases.get(original));
+    }
+  });
+};
+
+const findAndExtractExports = (root, context) => {
+  root.find(j.ExportNamedDeclaration).forEach(path => {
+    path.node.specifiers?.forEach(specifier => {
+      context.exports.set(specifier.exported.name, context.aliases.get(specifier.local.name) || context.imports.get(specifier.local.name));
+    });
+  });
+};
+
 module.exports = {
-  findAndReplaceProperty
+  findAndReplaceProperty,
+  findAndExtractImports,
+  findAndExtractVariables,
+  findAndExtractExports
 }

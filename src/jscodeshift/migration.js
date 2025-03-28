@@ -1,6 +1,14 @@
-const {findAndReplaceProperty} = require("../utils/migrationUtils");
+const {findAndReplaceProperty, findAndExtractImports, findAndExtractVariables, findAndExtractExports} = require("../utils/migrationUtils");
+
+const context = {
+  imports: new Map(),  // Tracks imported symbols (key: variable name, value: source file)
+  exports: new Map(),  // Tracks exported symbols (key: variable name, value: source file)
+  aliases: new Map(),   // Tracks variable assignments and re-exports
+};
+
 
 module.exports = function(fileInfo, api) {
+  console.log("*** Running migration script ***");
   const root = api.j(fileInfo.source);
   const j = api.j;
 
@@ -20,6 +28,14 @@ module.exports = function(fileInfo, api) {
         (specifier.imported.name === 'getContext' || specifier.imported.name === 'context' || specifier.local.name === 'context')
       );
     });
+
+  findAndExtractImports(root, context);
+  findAndExtractVariables(root, context);
+  findAndExtractExports(root, context);
+
+  console.log("Context Imports", context.imports);
+  console.log("Context Exports", context.exports);
+  console.log("Context Aliases", context.aliases);
 
   if (isContextImportedFromLibrary) {
     console.log('Migration Script: context-lib detected, proceeding with migration...');
