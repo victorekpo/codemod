@@ -1,7 +1,10 @@
-
 ```typescript
 // Example usage
 const functionExpression = new FunctionExpression({
+  loc: {
+    start: { line: 1, column: 0 },
+    end: { line: 1, column: 1 }
+  },
   comments: [{
     type: "Block",
     value: "This is a comment"
@@ -19,7 +22,6 @@ const functionExpression = new FunctionExpression({
     type: "Identifier",
     name: "myFunction"
   },
-  loc: undefined,
   predicate: undefined,
   rest: undefined,
   returnType: undefined,
