@@ -1,7 +1,7 @@
 const {loadContext} = require("./utils");
 
 const showResults = () => {
-  const myProfile = loadContext()
+  const context = loadContext()
   console.log("*** Context:", context, "***");
 }
 
