@@ -2,7 +2,7 @@ const j = require('jscodeshift');
 const fs = require('fs');
 const path = require('path');
 
-const contextFile = path.join(__dirname, '..', '..', '..', 'context.json');
+const contextFile = path.join(__dirname, '..', '..', '..', 'temp', 'context.json');
 
 // Utility function for logging
 const logReplacement = (fileInfo, oldName, newName, line, objectName) => {
@@ -269,12 +269,12 @@ const gatherFilesWithContext = (projectDir) => {
     filesWithExportsAndImports.importingFromExports = checkForImportsFromExports(projectDir, filesWithExportsAndImports.exporting);
   }
 
-  fs.writeFileSync('filesWithExportsAndImports.json', JSON.stringify(filesWithExportsAndImports, null, 2));
+  fs.writeFileSync('temp/filesWithExportsAndImports.json', JSON.stringify(filesWithExportsAndImports, null, 2));
   return filesWithExportsAndImports;
 };
 
 const readFilesWithExportsAndImports = () => {
-  return JSON.parse(fs.readFileSync('filesWithExportsAndImports.json', 'utf8'));
+  return JSON.parse(fs.readFileSync('temp/filesWithExportsAndImports.json', 'utf8'));
 };
 
 // Load context from JSON file

@@ -1,19 +1,53 @@
 {
-  "name": "codemod-scripts",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "@victorekpo/codemod",
+  "version": "0.0.1",
+  "description": "Codemod utils",
+  "keywords": [],
+  "homepage": "https://github.com/victorekpo/codemod#readme",
+  "bugs": {
+    "url": "https://github.com/victorekpo/codemod/issues"
+  },
+  "repository": {
+    "url": "git://github.com/victorekpo/codemod.git"
+  },
+  "license": "ISC",
+  "author": "Victor Ekpo",
+  "type": "module",
+  "exports": {
+    "./jest.config.js": "./jest.config.js",
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "main": "dist/index.cjs",
+  "types": "dist/index.d.ts",
   "scripts": {
     "gather-context": "node src/jscodeshift/gatherContext.js",
     "migrate": "npm run reset-migrated && npm run gather-context && npm run start-migrate",
     "reset-migrated": "cp -a src/jscodeshift/codeToMigrate/old/* src/jscodeshift/codeToMigrate/migrated",
-    "start-migrate": "jscodeshift -t src/jscodeshift/index.js src/jscodeshift/codeToMigrate/migrated"
+    "start-migrate": "jscodeshift -t src/jscodeshift/index.js src/jscodeshift/codeToMigrate/migrated",
+    "build": "rm -rf dist && rollup -c",
+    "type-check": "tsc --noEmit",
+    "cjs": "node dist/testFetch.cjs",
+    "mjs": "node dist/testFetch.mjs",
+    "test": "NODE_OPTIONS=\"--experimental-vm-modules\" jest",
+    "pack": "npm pack && mv victorekpo-codemod-0.0.1.tgz codemod.tgz",
+    "publish": "npm publish --access public"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
+    "ast-types": "^0.16.1",
     "axios": "^1.8.1",
     "jscodeshift": "^17.1.2"
-  }
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.3",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "rollup": "^4.37.0",
+    "tslib": "^2.8.1"
+  },
+  "module": "dist/index.mjs",
+  "//": "Make sure type is set to \"module\" for ESM support. Why \"exports\"?\nJest fails to load the config file properly without explicitly allowing it via \"exports\"."
 }
