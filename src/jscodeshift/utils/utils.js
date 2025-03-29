@@ -1,6 +1,7 @@
 const j = require('jscodeshift');
 const fs = require('fs');
 const path = require('path');
+const {Identifier, CallExpression} = require("@victorekpo/codemod-utils");
 
 const contextFile = path.join(__dirname, '..', '..', '..', 'context.json');
 
@@ -17,7 +18,7 @@ const logReplacement = (fileInfo, oldName, newName, line, objectName) => {
 // Reusable function for replacing properties in member expressions
 const findAndReplaceProperty = (fileInfo, root, contextMemberExpression, oldProperty, newProperty, objectName) => {
   console.log(`Replacing "${oldProperty}" with "${newProperty}" in object "${objectName}" in file ${fileInfo.path}`);
-  const oldMemberExpression = { ...contextMemberExpression, property: { name: oldProperty } };
+  const oldMemberExpression = {...contextMemberExpression, property: {name: oldProperty}};
 
   // 1. Replace the main property (e.g., context.user -> context.profile)
   root
@@ -51,7 +52,7 @@ const findAndReplaceProperty = (fileInfo, root, contextMemberExpression, oldProp
 
   // 4. Replace all uses of destructured old property with new property
   root
-    .find(j.Identifier, { name: oldProperty })
+    .find(j.Identifier, {name: oldProperty})
     .forEach(path => {
       const line = path.parentPath.node.loc ? path.parentPath.node.loc.start.line : null;
       console.log(`For destructured property, replaced usage of "${oldProperty}" with "${newProperty}" in object "${objectName}" (line: ${line} in ${fileInfo.path})`);
@@ -61,9 +62,11 @@ const findAndReplaceProperty = (fileInfo, root, contextMemberExpression, oldProp
   // 5. Handle array usage (e.g., context.user.map -> context.profile.map)
   root
     .find(j.CallExpression, {
-      callee: { name: 'map' },
+      callee: {name: 'map'},
     })
     .forEach(path => {
+      const func = new CallExpression(path.node);
+      console.log("Func", func.getArguments());
       const argument = path.node.arguments[0];
       if (argument && argument.body.type === 'MemberExpression') {
         if (argument.body.object.name === oldProperty) {
@@ -243,7 +246,7 @@ const checkForImportsFromExports = (projectDir, exportingFiles) => {
 
 // Function to gather files exporting or importing context
 const gatherFilesWithContext = (projectDir) => {
-  const filesWithExportsAndImports = { exporting: [], importing: [], importingFromExports: [] };
+  const filesWithExportsAndImports = {exporting: [], importing: [], importingFromExports: []};
 
   const files = fs.readdirSync(projectDir);
   files.forEach(file => {
@@ -274,7 +277,8 @@ const gatherFilesWithContext = (projectDir) => {
 };
 
 const readFilesWithExportsAndImports = () => {
-  return JSON.parse(fs.readFileSync('filesWithExportsAndImports.json', 'utf8'));
+  const filePath = path.resolve(__dirname, '../../../filesWithExportsAndImports.json');
+  return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 };
 
 // Load context from JSON file
@@ -282,7 +286,7 @@ const loadContext = () => {
   if (fs.existsSync(contextFile)) {
     return JSON.parse(fs.readFileSync(contextFile, 'utf-8'));
   }
-  return { imports: {}, aliases: {}, exports: {}, importsAll: {}, aliasesAll: {}, exportsAll: {} }; // Default empty context if no file exists
+  return {imports: {}, aliases: {}, exports: {}, importsAll: {}, aliasesAll: {}, exportsAll: {}}; // Default empty context if no file exists
 };
 
 // Save context to JSON file
@@ -295,8 +299,14 @@ const findAndExtractImports = (fileInfo, context, root) => {
   root.find(j.ImportDeclaration).forEach(path => {
     const sourceFile = path.node.source.value;
     path.node.specifiers.forEach(specifier => {
-      context.imports[specifier.local.name] = { sourceFile, importedAs: specifier.imported?.name || specifier.local.name };
-      context.importsAll[fileInfo.path + "-" + specifier.local.name] = { sourceFile, importedAs: specifier.imported?.name || specifier.local.name };
+      context.imports[specifier.local.name] = {
+        sourceFile,
+        importedAs: specifier.imported?.name || specifier.local.name
+      };
+      context.importsAll[fileInfo.path + "-" + specifier.local.name] = {
+        sourceFile,
+        importedAs: specifier.imported?.name || specifier.local.name
+      };
     });
   });
 };

@@ -6,13 +6,15 @@
     "gather-context": "node src/jscodeshift/gatherContext.js",
     "migrate": "npm run reset-migrated && npm run gather-context && npm run start-migrate",
     "reset-migrated": "cp -a src/jscodeshift/codeToMigrate/old/* src/jscodeshift/codeToMigrate/migrated",
-    "start-migrate": "jscodeshift -t src/jscodeshift/index.js src/jscodeshift/codeToMigrate/migrated"
+    "start-migrate": "jscodeshift -t src/jscodeshift/index.js src/jscodeshift/codeToMigrate/migrated",
+    "start": "node src/jscodeshift/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@victorekpo/codemod-utils": "^0.0.2-beta.1.2",
     "axios": "^1.8.1",
     "jscodeshift": "^17.1.2"
   }
