@@ -14,7 +14,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@victorekpo/codemod-utils": "^0.0.2-beta.1.2",
+    "@victorekpo/codemod-utils": "^0.0.2-beta.1.7",
     "axios": "^1.8.1",
     "jscodeshift": "^17.1.2"
   }
