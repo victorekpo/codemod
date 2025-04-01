@@ -1,6 +1,6 @@
-import { myProfile } from './index';
+import {myProfile} from './index.js';
 
-const { profile } = myProfile;
+const {profile} = myProfile;
 
 const fullName = profile.fullName;
 

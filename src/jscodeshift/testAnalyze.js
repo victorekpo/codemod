@@ -8,3 +8,4 @@ const __dirname = path.dirname(__filename);
 const analyzer = new ContextAnalyzer();
 const projectPath = path.resolve(__dirname, "codeToMigrate/migrated");
 await analyzer.analyzeEntrypoints(`${projectPath}/file5.js`);
+await analyzer.logGraph();

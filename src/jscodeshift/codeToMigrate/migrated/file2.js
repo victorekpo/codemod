@@ -1,4 +1,4 @@
-import { getProfile } from 'my-lib';
+import {getProfile} from 'my-lib';
 
 const myProfile = getProfile();
 
@@ -11,3 +11,5 @@ if (!username) {
 }
 
 console.log('User:', username, fullName);
+
+export {getProfile};
