@@ -4,7 +4,9 @@
   "main": "index.js",
   "scripts": {
     "clean": "rm -r node_modules package-lock.json src/jscodeshift/dependencyGraph.json src/jscodeshift/dependencyGraphGrouped.json",
+    "analyze": "node src/jscodeshift/analyze.js",
     "gather-context": "node src/jscodeshift/gatherContext.js",
+    "install:local": "npm uninstall @victorekpo/codemod-utils && npm install ~/projects/github/codemod-utils/codemod-utils.tgz",
     "migrate": "npm run reset-migrated && npm run gather-context && npm run start-migrate",
     "reset-migrated": "cp -a src/jscodeshift/codeToMigrate/old/* src/jscodeshift/codeToMigrate/migrated",
     "start-migrate": "jscodeshift -t src/jscodeshift/index.js src/jscodeshift/codeToMigrate/migrated",
@@ -15,7 +17,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@victorekpo/codemod-utils": "0.0.1",
+    "@victorekpo/codemod-utils": "0.0.2-beta.1",
     "axios": "^1.8.1",
     "jscodeshift": "^17.1.2"
   }

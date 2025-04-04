@@ -2,14 +2,12 @@ import {getProfile} from 'my-lib';
 
 const myProfile = getProfile();
 
-const fullName = myProfile.profile.fullName;
+const fullName = myProfile.user.name;
 
-const username = myProfile.profile.username;
+const username = myProfile.user.username;
 
-if (!username) {
+if (!user) {
   throw new Error('no username found');
 }
 
-console.log('User:', username, fullName);
-
-export {getProfile};
+console.log('User:', user, fullName);
