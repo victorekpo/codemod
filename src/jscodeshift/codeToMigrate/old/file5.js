@@ -1,10 +1,10 @@
 import {myProfile} from './index.js';
 
-const {user} = myProfile;
+const {userProfile} = myProfile;
 
-const fullName = user.name;
+const fullName = userProfile.name;
 
-const username = user.username;
+const username = userProfile.username;
 
 if (!username) {
   throw new Error('no username found');

@@ -1,12 +1,12 @@
-import { getProfile } from 'my-lib';
+import {getProfile} from 'my-lib';
 
 export const myProfile = getProfile();
 
-const { user } = myProfile;
+const {userProfile} = myProfile;
 
-const fullName = user.name;
+const fullName = userProfile.name;
 
-const username = user.username;
+const username = userProfile.username;
 
 if (!username) {
   throw new Error('no username found');

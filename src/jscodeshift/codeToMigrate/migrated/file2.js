@@ -6,8 +6,8 @@ const fullName = myProfile.user.name;
 
 const username = myProfile.user.username;
 
-if (!user) {
+if (!username) {
   throw new Error('no username found');
 }
 
-console.log('User:', user, fullName);
+console.log('User:', username, fullName);
