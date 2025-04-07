@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "clean": "rm -r node_modules package-lock.json src/jscodeshift/dependencyGraph.json src/jscodeshift/dependencyGraphGrouped.json",
+    "clean": "rm -rf node_modules package-lock.json dependencyGraph.json dependencyGraphGrouped.json && npm run reset-migrated",
     "analyze": "node src/jscodeshift/analyze.js",
     "transform": "node src/jscodeshift/transform.js",
     "gather-context": "node src/jscodeshift/gatherContext.js",
@@ -18,7 +18,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@victorekpo/codemod-utils": "0.0.2",
+    "codemod-utils": "0.0.2",
     "axios": "^1.8.1",
     "jscodeshift": "^17.1.2"
   }

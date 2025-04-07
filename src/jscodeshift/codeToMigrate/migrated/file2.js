@@ -11,3 +11,5 @@ if (!username) {
 }
 
 console.log('User:', username, fullName);
+
+export {getProfile};

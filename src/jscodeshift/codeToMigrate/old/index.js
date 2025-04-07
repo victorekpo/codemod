@@ -1,4 +1,4 @@
-import {getProfile} from 'my-lib';
+import {getProfile} from './file2.js';
 
 export const myProfile = getProfile();
 

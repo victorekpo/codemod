@@ -1,4 +1,4 @@
-import {GraphTransformer} from "@victorekpo/codemod-utils";
+import {GraphTransformer} from "codemod-utils";
 import {analyzer} from "./analyze.js";
 
 const graphTransformer = new GraphTransformer(analyzer.convertGraphToGroupedGraph());

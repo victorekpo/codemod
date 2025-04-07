@@ -1,4 +1,4 @@
-import {ContextAnalyzer} from "@victorekpo/codemod-utils";
+import {ContextAnalyzer} from "codemod-utils";
 import path from "node:path";
 import {fileURLToPath} from "node:url";
 

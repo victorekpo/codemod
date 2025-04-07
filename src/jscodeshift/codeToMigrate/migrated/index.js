@@ -1,4 +1,4 @@
-import {getProfile} from 'my-lib';
+import {getProfile} from './file2.js';
 
 export const myProfile = getProfile();
 
@@ -6,10 +6,10 @@ const {userProfile} = myProfile;
 
 const fullName = userProfile.name;
 
-const user = userProfile.username;
+const username = userProfile.username;
 
-if (!user) {
+if (!username) {
   throw new Error('no username found');
 }
 
-console.log('User:', user, fullName);
+console.log('User:', username, fullName);

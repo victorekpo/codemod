@@ -1,7 +1,7 @@
-const {myProfile} = require('./index');
+const { myProfile } = require('./index');
 
 
-const {user} = myProfile;
+const { user } = myProfile;
 
 
 const fullName = user.name;
