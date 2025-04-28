@@ -54,6 +54,8 @@ const findAndReplaceProperty = (fileInfo, root, contextMemberExpression, oldProp
   root
     .find(j.Identifier, {name: oldProperty})
     .forEach(path => {
+      const id = new Identifier(path.node);
+      console.log("ID", id.getName());
       const line = path.parentPath.node.loc ? path.parentPath.node.loc.start.line : null;
       console.log(`For destructured property, replaced usage of "${oldProperty}" with "${newProperty}" in object "${objectName}" (line: ${line} in ${fileInfo.path})`);
       path.node.name = newProperty;
